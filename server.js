@@ -48,9 +48,9 @@ app.use(session({
 }));
 
 
-// app.set('view engine', 'ejs');
+app.set('view engine', 'ejs');
 app.set('views', __dirname + "/views");
-app.engine('jsx', ReactEngine());
+// app.engine('jsx', ReactEngine());
 app.use('/', express.static(__dirname + "/views"));
 app.use(cookieParser());
 app.use(bodyParser.json());
