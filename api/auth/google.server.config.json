@@ -1,0 +1,9 @@
+{
+  "google": {
+    "clientID": "438084650027-74mdjavgfs22plk0knj6plre3ecpiko3.apps.googleusercontent.com",
+    "clientSecret": "ZLfJSY5JF-XM_FUYR-27t3AU",
+    "callbackURL": "https://vpb.herokuapp.com/api/auth/google/callback"
+  }
+}
+
+
