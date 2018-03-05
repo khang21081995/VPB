@@ -34,6 +34,11 @@ module.exports = function (User) {
                             // console.log(profile);
                             profile.role = data.role;
                             profile.isBlock = data.isBlock;
+                            profile.name = data.name;
+                            profile.title = data.title;
+                            profile.phone = data.phone;
+                            profile.username = data.username;
+                            profile._id = data._id;
                             // profile.name = data.name;
                             return done(err, profile);
                         } else
