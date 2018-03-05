@@ -8,7 +8,6 @@ module.exports = function (app) {
     //
     app.use("/api/auth", require("./api/auth"));
     app.use("/api/user", require("./api/user"));
-    app.use("/api/title", require("./api/title"));
 
     app.get('/', function (req, res) {
         if (req.isAuthenticated()) {

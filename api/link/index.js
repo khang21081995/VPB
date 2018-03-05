@@ -16,5 +16,7 @@ var router = express.Router();
 router.post("/addLink", authService.hasRole(roles.userRoles[2]), userService.checkAcceptAble(), controller.addLink);//need admin roles
 router.put("/editLink", authService.hasRole(roles.userRoles[2]), userService.checkAcceptAble(), controller.editLink);//need admin roles
 router.delete("/deleteLink", authService.hasRole(roles.userRoles[2]), userService.checkAcceptAble(), controller.deleteLink);//need admin roles
-router.get("/", controller.getLink);
+router.get("/", authService.hasRole(roles.userRoles[2]), userService.checkAcceptAble(), controller.getLink);
+
+
 module.exports = router;
