@@ -47,7 +47,8 @@ module.exports = {
             if (err)
                 require("./logger").error(String(err));
         })
-    }
+    },
+
 
 
 }

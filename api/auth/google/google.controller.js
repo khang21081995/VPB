@@ -2,6 +2,7 @@ var authConfig = require('../auth.config');
 module.exports = {
 
     logout: function (req, res) {
+
         req.session.destroy(function (err) {
             // req.flash('info', 'Flash Message Added');
             res.redirect('/'); //Inside a callback… bulletproof!

@@ -8,11 +8,8 @@ module.exports = function (app) {
     //
     app.use("/api/auth", require("./api/auth"));
     app.use("/api/user", require("./api/user"));
-    // app.use("/api/node", require("./api/node"));
-    // app.use("/api/log", require("./api/log"));
-    // app.use("/api/weather", require("./api/weather"));
-    //
-    //
+    app.use("/api/title", require("./api/title"));
+
     app.get('/', function (req, res) {
         if (req.isAuthenticated()) {
             // res.render('index.ejs');
@@ -21,10 +18,10 @@ module.exports = function (app) {
             res.render('index.ejs');
     });
     //
-    // app.get("/homepage", service.hasRole('manager'), function (req, res) {
-    //     // console.log(req.user);
-    //     res.render('admin/homepage.ejs', {loginUser: req.user});
-    // });
+    app.get("/homepage", service.hasRole('member'), function (req, res) {
+        console.log(req.user);
+        res.render('homepage.ejs', {loginUser: req.user});
+    });
     //
     // app.get("/user", service.hasRole('manager'), function (req, res) {
     //     userModel.find()

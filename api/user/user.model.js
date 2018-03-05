@@ -19,13 +19,19 @@ var user = new Schema({
         lowercase: true,
         require: true,
         match: [emailRegex, messages.email_invalid],
-        trim:true
+        trim: true
     },
     name: {
         type: String,
         require: true,
         uppercase: true,
-        trim:true
+        trim: true
+    },
+    phone: {
+        type: String,
+        require: false,
+        uppercase: true,
+        trim: true
     },
     role: {
         type: String,
@@ -36,10 +42,14 @@ var user = new Schema({
         },
         lowercase: true,
         require: true,
-        trim:true
-
+        trim: true
     },
-    isBlock: {//true is the same as:  user is existed but have been block by admin and can' login to the system
+    title: {
+        type: String,
+        default: "",
+        trim: true,
+    },
+    isBlock: {//true is the same as:  user is existed but have been block by admin and can't login to the system
         type: Boolean,
         default: false,
         require: true
