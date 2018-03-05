@@ -47,7 +47,7 @@ var user = new Schema({
     title: {
         type: String,
         default: "",
-        trim: true,
+        trim: true
     },
     isBlock: {//true is the same as:  user is existed but have been block by admin and can't login to the system
         type: Boolean,

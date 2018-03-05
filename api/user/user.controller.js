@@ -4,163 +4,155 @@
 'use strict';
 
 var User = require("./user.model");
-var messages = require("./user.message.json").messages;
+var message = require("./user.message.json").message;
+var roles = require('../auth/auth.config');
 // var logController = require("../log/log.controller");
 // var logger = require('winston');
 var util = require('../util');
 module.exports = {
     addUser: function (req, res) {
-        var username, role;
-        if ((username = req.body.username) && (role = req.body.role)) {
-            username = username.toLowerCase().trim();
-            role = role.toLowerCase().trim();
-            if (req.user.isBlock) {
-                res.json({status: false, message: messages.block_message});
-            } else if (util.CompareRole1IsSmallerThanRole2(req.user.role, role)) {
-                //neu role cua nguoi add ma nho hon role duoc add thi khong duoc phep
-                res.json({status: false, message: messages.authority_message});
+        var userName = req.body.username;
+        var name = req.body.name;
+        var phone = req.body.phone;
+        var role = roles.userRoles[1];//manager
+        var title = req.body.title;
+        var isBlock = false;
+        if (!userName) res.json({
+            status: false,
+            message: "Tài khoản người dùng không được để trống"
+        }); else if (!name) res.json({status: false, message: "Tên người dùng không được để trống."});
+        else {
 
-            } else {
-                User.findOne({username: username}).exec(function (err, data) {
+            title = title ? title : "";
+            User.findOne({username: userName.trim()}).exec(function (err, data) {
+                if (data) {
+                    res.json({status: false, message: "Người dùng đã tồn tại trong hệ thống. Vui lòng kiểm tra lại!"});
+                } else if (err) {
+                    res.json({
+                        status: false,
+                        message: "Đã xảy ra lỗi trong quá trình kiểm tra tính hợp lệ của người dùng. Vui lòng thử lại!"
+                    });
+
+                } else {
+                    var newUser = new User({
+                        username: userName,
+                        name: name,
+                        phone: phone,
+                        role: role,
+                        title: title,
+                        isBlock: isBlock
+                    });
+
+                    newUser.validate(function (err) {
+                        if (err) {
+                            console.log(String(err));
+                            res.json({status: false, message: String(err).split(":")[2]});//message in validation
+                        } else {
+                            User.create(newUser, function (err, data) {
+                                if (!err) {
+                                    res.json({status: true, message: "Thêm mới người dùng thành công."})
+                                } else {
+                                    res.json({status: false, message: "Đã có lỗi đã xảy ra, Xin vui lòng thử lại!"})
+                                }
+                            })
+                        }
+                    })
+
+
+                }
+            })
+        }
+
+    },
+    blockUser: function (req, res) {
+        var userName = req.body.username;
+        if (userName) {
+            userName = userName.trim();
+            if (userName.toLowerCase().equals(req.user.username.toLowerCase())) {
+                res.json({status: false, message: "Bạn không thể khóa tài khoản của chính mình. "})
+            } else
+                User.findOne({username: userName, isBlock: false}).exec(function (err, data) {
                     if (data) {
-                        res.json({status: false, message: messages.username_existed});
-                    } else {
-
-                        var newUser = new User({
-                            username: username,
-                            role: role
-                        });
-                        newUser.validate(function (err) {
-                            if (err) {
-                                console.log(String(err));
-                                res.json({status: false, message: String(err).split(":")[2]});//message in validation
+                        data.isBlock = true;
+                        data.save(function (err, newData) {
+                            if (!err) {
+                                res.json({status: true, message: "Khóa tài khoản người dùng thành công"});
                             } else {
-                                User.create(newUser, function (err, data) {
-                                    if (!err) {
-                                        // console.log("data:" + data);
-                                        // logController.addLogAuto(req, newUser.username, "add", "Adding new User");
-                                        res.json({status: true, message: messages.add_user_status.success});
-                                    } else {
-                                        // console.log("data:" + data);
-                                        res.json({status: false, message: err.message});//message in pre save
-
-                                    }
-                                });
+                                // logController.addLogAuto(req, username, "block", "Block User");
+                                res.json({status: false, message: "Đã có lỗi đã xảy ra, Xin vui lòng thử lại "});
                             }
                         })
-                    }
-                });
-            }
-        } else {
-            res.json({status: false, message: messages.empty_info_validate});
-        }
-    },
-
-
-    blockUser: function (req, res) {
-        var username;
-        if (username = req.body.username) {
-            username = username.toLowerCase().trim();
-            User.findOne({username: username}).exec(
-                function (err, data) {
-                    if (data) {
-                        if (util.CompareRole1IsSmallerThanRole2(data.role, req.user.role)) {
-                            data.isBlock = true;
-                            data.save(function (err, newData) {
-                                if (err) {
-                                    res.json({status: false, message: messages.block_user_status.fail});
-                                } else {
-                                    // logController.addLogAuto(req, username, "block", "Block User");
-                                    res.json({status: true, message: messages.block_user_status.success});
-                                }
-                            });
-                        } else {
-                            res.json({status: false, message: messages.authority_message});
-                        }
-
                     } else {
-                        res.json({status: false, message: messages.username_not_existed});
+                        res.json({
+                            status: false,
+                            message: "Hệ thống không tìm thấy tài khoản, Xin vui lòng kiểm tra lại."
+                        });
                     }
-                }
-            )
+                })
+
         } else {
-            res.json({status: false, message: messages.username_require})
-
+            res.json({
+                status: false,
+                message: "Khóa tài khoản người dùng thất bại. Tài khoản người dùng không được để trống!"
+            });
         }
-
     },
     unBlockUser: function (req, res) {
-        var username;
-        if (username = req.body.username) {
-            username = username.trim().toLowerCase();
-            User.findOne({username: username}).exec(
-                function (err, data) {
-                    if (data) {
-                        if (!util.CompareRole1IsSmallerThanRole2(req.user.role, data.role)) {
-                            data.isBlock = false;
-                            data.save(function (err, newData) {
-                                if (err) {
-                                    res.json({status: false, message: messages.unblock_user_status.fail});
-                                } else {
-                                    // logController.addLogAuto(req, username, "unBlock", "Un-Block User");
-                                    res.json({status: true, message: messages.unblock_user_status.success});
-                                }
-                            });
+        var userName = req.body.username;
+        if (userName) {
+            userName = userName.trim();
+            User.findOne({username: userName, isBlock: true}).exec(function (err, data) {
+                if (data) {
+                    data.isBlock = false;
+                    data.save(function (err, newData) {
+                        if (!err) {
+                            res.json({status: true, message: "Mở khóa tài khoản người dùng thành công."});
                         } else {
-                            res.json({status: false, message: messages.authority_message});
+                            res.json({status: false, message: "Đã có lỗi đã xảy ra, Xin vui lòng thử lại."});
                         }
-
-                    } else {
-                        res.json({status: false, message: messages.username_not_existed});
-                    }
+                    })
+                } else {
+                    res.json({status: false, message: "Hệ thống không tìm thấy tài khoản, Xin vui lòng kiểm tra lại."});
                 }
-            )
-        } else {
-            res.json({status: false, message: messages.username_require})
+            })
 
+        } else {
+            res.json({
+                status: false,
+                message: "Mở khóa tài khoản người dùng thất bại. Tài khoản người dùng không được để trống!"
+            });
         }
 
     },
-    editRole: function (req, res) {//
-        var username, role;
-        var beforeRole;
-        if (req.body.username && req.body.role) {
-            username = req.body.username.toLowerCase().trim();
-            role = req.body.role.toLowerCase().trim();
-            User.findOne({username: username}).exec(
-                function (err, data) {
-                    if (data) {
-                        if (role === data.role) {
-                            res.json({status: false, message: messages.role_current});
-                        } else
-                        //nếu role của người thực hiện không nhỏ hơn role sẽ sửa đổi và role của người được đổi phải nhỏ hơn role của người thực hiện
-                        if (!util.CompareRole1IsSmallerThanRole2(req.user.role, role)
-                            && util.CompareRole1IsSmallerThanRole2(data.role, req.user.role)
-                        ) {
-                            data.role = role;
-                            data.save(function (err, newData) {
-                                if (err) {
-                                    res.json({status: false, message: messages.update_user_status.fail});
-                                }
-                                else {
-                                    // logController.addLogAuto(req, username, "modify", "Update role from '" + beforeRole + "' to '" + role + "'");
-                                    res.json({status: true, message: messages.update_user_status.success});
-
-                                }
-                            });
+    editUser: function (req, res) {//
+        var userName = req.body.username;
+        var name = req.body.name;
+        var phone = req.body.name;
+        var title = req.body.title;
+        if (!userName) res.json({
+            status: false,
+            message: "Tài khoản người dùng không được để trống"
+        });
+        else if (!name) res.json({status: false, message: "Tên người dùng không được để trống"});
+        else {
+            title = title ? title : "";
+            User.findOne({username: userName.trim()}).exec(function (err, data) {
+                if (data) {
+                    data.name = name;
+                    data.phone = phone;
+                    data.title = title;
+                    data.save(function (err, newData) {
+                        if (err) {
+                            res.json({status: false, message: "Đã có lỗi đã xảy ra, Xin vui lòng thử lại."});
                         } else {
-                            res.json({status: false, message: messages.access_denied});
+                            res.json({status: true, message: "Sửa đổi thông tin người dùng thành công."});
                         }
-                    } else {
-                        res.json({status: false, message: messages.username_not_existed});
-                    }
+                    })
+                } else {
+                    res.json({status: false, message: "Hệ thống không tìm thấy tài khoản, Xin vui lòng kiểm tra lại."});
                 }
-            )
-        } else {
-            res.json({status: false, message: messages.username_require})
-
+            })
         }
-
     },
     findAll: function (req, res) {
         User.find().exec(function (err, data) {
