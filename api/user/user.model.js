@@ -54,6 +54,7 @@ var user = new Schema({
         default: false,
         require: true
     },
+    refID: {type: Schema.Types.ObjectId, ref: "User"}
     // nodes:[{type: Number, ref: "Node"}]
 });
 

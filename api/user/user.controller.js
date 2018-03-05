@@ -40,7 +40,8 @@ module.exports = {
                         phone: phone,
                         role: role,
                         title: title,
-                        isBlock: isBlock
+                        isBlock: isBlock,
+                        refID: req.user._id
                     });
 
                     newUser.validate(function (err) {

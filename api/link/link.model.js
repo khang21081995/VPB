@@ -16,5 +16,6 @@ var title = new Schema({
 
 title.pre('save', function (next) {
     this.name = this.name.substr(0, 1).toUpperCase() + this.name.substr(1, this.name.length()).toLowerCase();
+    return next();
 });
 module.exports = mongoose.model('Link', title);
