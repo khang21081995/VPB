@@ -69,7 +69,11 @@ module.exports = {
     },
     getLink: function (req, res) {
         Link.find().exec(function (err, data) {
-            res.json({data: data});
+            if (!err)
+                res.json({status: true, data: data});
+            else {
+                res.json({status: false, message: "Đã có lỗi xảy ra! Xin vui lòng thử lại"})
+            }
         })
     }
 

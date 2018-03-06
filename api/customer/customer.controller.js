@@ -218,6 +218,20 @@ module.exports = {
         } else {
             res.json({status: false, message: "Đã có lỗi xảy ra với phiên đăng nhập. Xin vui lòng đăng nhập lại!"});
         }
+    },
+    deleteCustomer: function (req, res) {
+        var cusId = req.body._id;
+        if (!cusId) {
+            res.json({status: false, message: "Khách hàng không tồn tại. Xin vui lòng kiểm tra lại."})
+        } else {
+            Customer.remove({_id: cusId}).exec(function (err) {
+                if (err) {
+                    res.json({status: false, message: "Xóa bản ghi thất bại. Vui lòng thử lại!"})
+                } else {
+                    res.json({status: true, message: "Xóa bản ghi thành công"})
+                }
+            })
+        }
     }
 
 }

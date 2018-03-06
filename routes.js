@@ -1,4 +1,3 @@
-
 var service = require('./api/auth/service');
 var userModel = require('./api/user/user.model');
 // var logModel = require('./api/log/log.model');
@@ -8,6 +7,7 @@ module.exports = function (app) {
     //
     app.use("/api/auth", require("./api/auth"));
     app.use("/api/user", require("./api/user"));
+    app.use("/api/customer", require("./api/customer"));
 
     app.get('/', function (req, res) {
         if (req.isAuthenticated()) {

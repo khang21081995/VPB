@@ -13,10 +13,11 @@ var router = express.Router();
 
 /***************************** api/user  *****************************/
 
-// router.post("/addLink", authService.hasRole(roles.userRoles[2]), userService.checkAcceptAble(), controller.addLink);//need admin roles
-// router.put("/editLink", authService.hasRole(roles.userRoles[2]), userService.checkAcceptAble(), controller.editLink);//need admin roles
-// router.delete("/deleteLink", authService.hasRole(roles.userRoles[2]), userService.checkAcceptAble(), controller.deleteLink);//need admin roles
-// router.get("/", authService.hasRole(roles.userRoles[2]), userService.checkAcceptAble(), controller.getLink);
+router.post("/addCustomer", authService.hasRole(roles.userRoles[1]), userService.checkAcceptAble(), controller.addCustomer);//need admin roles
+router.put("/editByManager", authService.hasRole(roles.userRoles[1]), userService.checkAcceptAble(), controller.editByManager);//need manager roles
+router.put("/editByAdmin", authService.hasRole(roles.userRoles[2]), userService.checkAcceptAble(), controller.editByAdmin);//need admin roles
+router.delete("/deleteCustomer", authService.hasRole(roles.userRoles[2]), userService.checkAcceptAble(), controller.deleteCustomer);//need admin roles
+router.get("/", authService.hasRole(roles.userRoles[1]), userService.checkAcceptAble(), controller.getAllCusByAccount);
 
 
 module.exports = router;
