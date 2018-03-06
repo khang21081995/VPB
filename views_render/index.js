@@ -3,7 +3,7 @@
 var express = require('express');
 
 var router = express.Router();
-
+var service = require('../api/auth/service');
 
 function renderview(pathToView, linkToView) {
     router.get(pathToView, function (req, res) {
