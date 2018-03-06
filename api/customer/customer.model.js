@@ -31,7 +31,7 @@ var customer = new Schema({
     }
 });
 
-title.pre('save', function (next) {
+customer.pre('save', function (next) {
     this.idCard = util.replaceAll(this.idCard, " ", "");
     this.phone = util.replaceAll(this.phone, " ", "");
     return next();
