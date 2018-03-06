@@ -1,8 +1,10 @@
 'use strict';
 
 var Customer = require("./customer.model");
+var Users = require("../user/user.model");
 var util = require('../util');
 var cusStatus = require("./customer.config").status;
+var roles = require('../auth/auth.config').userRoles;
 module.exports = {
     addCustomer: function (req, res) {
         var name = req.body.name;
@@ -72,6 +74,10 @@ module.exports = {
         }
     },
     editByManager: function (req, res) {
+        if (roles.indexOf(req.user.role) !== 1) {
+            res.json({status: false, message: "Bạn không có quyền thực hiện hành động này!"});
+            return;
+        }
         var _id = req.body._id;
         var name = req.body.name;
         var phone = util.replaceAll(req.body.phone, " ", "");
@@ -132,6 +138,8 @@ module.exports = {
                         })
                     }
 
+                } else {
+                    res.json({status: false, message: "Không tìm thấy đối tượng! Xin hãy kiểm tra lại!"})
                 }
             })
 
@@ -142,9 +150,73 @@ module.exports = {
         var status = req.body.status;
         var moneyAccepted = req.body.moneyAccepted;
 
-        if(!_id||!status){
-            res.json({status:false,message: ""})
+        if (!_id || !status) {
+            res.json({status: false, message: "Đã có lỗi xảy ra. Xin vui lòng kiểm tra lại!"});
+        } else if (moneyAccepted < 0) {
+            res.json({status: false, message: "Tiền được duyệt không được nhỏ hơn 0đ. Xin vui lòng kiểm tra lại!"});
+        } else {
+            Customer.findOne({_id: _id}).exec(function (err, data) {
+                if (data) {
+                    data.status = status;
+                    data.moneyAccepted = moneyAccepted;
+                    data.validate(function (err) {
+                        if (err) {
+                            res.json({
+                                status: false,
+                                message: "Một số thông tin không hợp lệ. Vui lòng kiểm tra lại"
+                            })
+                        } else {
+                            data.save(function (err, newData) {
+                                if (!err) {
+                                    res.json({status: true, message: "Cập nhật thành công!"})
+                                } else {
+                                    res.json({
+                                        status: false,
+                                        message: "Đã xảy ra lỗi trong quá trình cập nhật. Xin vui lòng thử lại!"
+                                    })
+                                }
+                            })
+                        }
+                    })
+                } else {
+                    res.json({status: false, message: "Không tìm thấy đối tượng! Xin hãy kiểm tra lại!"})
+                }
+            })
+        }
+    },
+    getAllCusByAccount: function (req, res) {
+        var currentLoginAccId = req.user._id;
+        var currentLoginRole = req.user.role;
+        if (currentLoginRole === roles[2]) {//admin
 
+            Users.find({refID: currentLoginAccId}).exec(function (err, data) {
+                if (err) {
+                    res.json({status: false, message: "Đã có lỗi xảy ra! Xin vui lòng thử lại!"});
+                } else {
+                    for (var i = 0; i < data.length; i++) {
+                        managers.push({salerID: data[i]._id});
+                    }
+                    Customer.find({$or: managers}).exec(function (err, data) {
+                        if (err) {
+                            res.json({status: false, message: "Đã có lỗi xảy ra! Xin vui lòng thử lại!"});
+                        } else {
+                            res.json({status: true, data: data})
+                        }
+
+                    })
+                }
+            })
+        } else if (currentLoginRole === roles[1]) {//manager
+            Customer.find({salerID: currentLoginAccId}).exec(function (err, data) {
+                if (err) {
+                    res.json({status: false, message: "Đã có lỗi xảy ra! Xin vui lòng thử lại!"});
+                } else {
+                    res.json({status: true, data: data})
+                }
+
+            })
+        } else {
+            res.json({status: false, message: "Đã có lỗi xảy ra với phiên đăng nhập. Xin vui lòng đăng nhập lại!"});
         }
     }
 
