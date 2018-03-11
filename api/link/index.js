@@ -12,7 +12,25 @@ var router = express.Router();
 
 
 /***************************** api/user  *****************************/
-
+/**
+ * @swagger
+ * /api/customer/addCustomer:
+ *   post:
+ *     tags:
+ *       - Link
+ *     description: Thêm link mới
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: puppy
+ *         description: Puppy object
+ *         in: body
+ *         required: true
+ *     responses:
+ *       200:
+ *         description: Successfully created
+ *
+ */
 router.post("/addLink", authService.hasRole(roles.userRoles[2]), userService.checkAcceptAble(), controller.addLink);//need admin roles
 router.put("/editLink", authService.hasRole(roles.userRoles[2]), userService.checkAcceptAble(), controller.editLink);//need admin roles
 router.delete("/deleteLink", authService.hasRole(roles.userRoles[2]), userService.checkAcceptAble(), controller.deleteLink);//need admin roles
