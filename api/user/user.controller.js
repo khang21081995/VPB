@@ -53,7 +53,8 @@ module.exports = {
                                 if (!err) {
                                     res.json({status: true, message: "Thêm mới người dùng thành công."})
                                 } else {
-                                    res.json({status: false, message: "Đã có lỗi đã xảy ra, Xin vui lòng thử lại!"})
+                                    console.log(String(err).split(":")[2]);
+                                    res.json({status: false, message: err.message})
                                 }
                             })
                         }

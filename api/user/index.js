@@ -14,24 +14,57 @@ var swaggerJSDoc = require('swagger-jsdoc');
 /***************************** api/user  *****************************/
 
 
-/**
- * @swagger
- * definitions:
- *   Puppy:
- *     properties:
- *       name:
- *         type: string
- *       breed:
- *         type: string
- *       age:
- *         type: integer
- *       sex:
- *         type: string
- */
-
 router.put("/block", authService.hasRole(roles.userRoles[2]), userService.checkAcceptAble(), controller.blockUser);// need admin roles
 router.put("/unblock", authService.hasRole(roles.userRoles[2]), userService.checkAcceptAble(), controller.unBlockUser);// need admin roles
+
+
+/**
+ * @swagger
+ * /api/user/addUser:
+ *   post:
+ *     tags:
+ *       - User
+ *     description: Thêm thông tin người dùng mới
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: Thông tin người dùng
+ *         description: Nhập thông tin người dùng
+ *         in: body
+ *         required: true
+ *         schema:
+ *           type: object
+ *           properties:
+ *             username:
+ *              type: string
+ *              example: khangpqvn@gmail.com
+ *             name:
+ *              type: string
+ *              example: Phạm Quang Khang
+ *             phone:
+ *              type: string
+ *              example: 0981604050
+ *             title:
+ *              type: string
+ *              example: Ô-sin cao cấp
+ *     responses:
+ *       200:
+ *         description: Thêm người dùng thành công
+ *         schema:
+ *          type: object
+ *          properties:
+ *            status:
+ *              type: boolean
+ *            message:
+ *              type: string
+ *              example: Thêm mới người dùng thành công
+ *
+ *
+ *
+ */
 router.post("/adduser", authService.hasRole(roles.userRoles[2]), userService.checkAcceptAble(), controller.addUser);//need admin roles
+
+
 router.put("/edituser", authService.hasRole(roles.userRoles[2]), userService.checkAcceptAble(), controller.editUser);//need admin roles
 
 /**

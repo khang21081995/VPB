@@ -63,7 +63,7 @@ var user = new Schema({
 user.pre('save', function (next) {
     // Handle new user update role
     if (config.domain.indexOf(this.username.toLowerCase().trim().split("@")[1]) >= 0) {//validate domain is accepted}
-        this.name = this.username.split("@")[0];
+        if (!this.name) this.name = this.username.split("@")[0];
         return next();
     } else return next(new Error(messages.domain_err));
 
