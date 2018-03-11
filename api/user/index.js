@@ -129,7 +129,7 @@ router.post("/adduser", authService.hasRole(roles.userRoles[2]), userService.che
 
 /**
  * @swagger
- * /api/user/addUser:
+ * /api/user/editUser:
  *   put:
  *     tags:
  *       - User
