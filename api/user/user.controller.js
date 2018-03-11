@@ -14,7 +14,7 @@ module.exports = {
         var userName = req.body.username;
         var name = req.body.name;
         var phone = req.body.phone;
-        var role = roles.userRoles[1];//manager
+        var role = req.body.role || roles.userRoles[1];//manager
         var title = req.body.title;
         var isBlock = false;
         if (!userName) res.json({
@@ -71,7 +71,7 @@ module.exports = {
         // console.log(userName)
         if (userName) {
             userName = userName.trim();
-            if (userName.toLowerCase()===req.user.username.toLowerCase()) {
+            if (userName.toLowerCase() === req.user.username.toLowerCase()) {
                 res.json({status: false, message: "Bạn không thể khóa tài khoản của chính mình. "})
             } else
                 User.findOne({username: userName, isBlock: false}).exec(function (err, data) {
