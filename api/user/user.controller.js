@@ -46,14 +46,14 @@ module.exports = {
 
                     newUser.validate(function (err) {
                         if (err) {
-                            console.log(String(err));
+                            // console.log(String(err));
                             res.json({status: false, message: String(err).split(":")[2]});//message in validation
                         } else {
                             User.create(newUser, function (err, data) {
                                 if (!err) {
                                     res.json({status: true, message: "Thêm mới người dùng thành công."})
                                 } else {
-                                    console.log(String(err).split(":")[2]);
+                                    // console.log(String(err).split(":")[2]);
                                     res.json({status: false, message: err.message})
                                 }
                             })
@@ -68,9 +68,10 @@ module.exports = {
     },
     blockUser: function (req, res) {
         var userName = req.body.username;
+        // console.log(userName)
         if (userName) {
             userName = userName.trim();
-            if (userName.toLowerCase().equals(req.user.username.toLowerCase())) {
+            if (userName.toLowerCase()===req.user.username.toLowerCase()) {
                 res.json({status: false, message: "Bạn không thể khóa tài khoản của chính mình. "})
             } else
                 User.findOne({username: userName, isBlock: false}).exec(function (err, data) {

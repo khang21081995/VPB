@@ -13,8 +13,71 @@ var swaggerJSDoc = require('swagger-jsdoc');
 
 /***************************** api/user  *****************************/
 
-
+/**
+ * @swagger
+ * /api/user/block:
+ *   put:
+ *     tags:
+ *       - User
+ *     description: khóa tài khoản người dùng
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: Thông tin người dùng
+ *         description: Nhập thông tin người dùng
+ *         in: body
+ *         required: true
+ *         schema:
+ *           type: object
+ *           properties:
+ *             username:
+ *              type: string
+ *              example: khangpqvn@gmail.com
+ *     responses:
+ *       200:
+ *         description: Khóa người dùng thành công
+ *         schema:
+ *          type: object
+ *          properties:
+ *            status:
+ *              type: boolean
+ *            message:
+ *              type: string
+ *              example: Khóa tài khoản người dùng thành công
+ */
 router.put("/block", authService.hasRole(roles.userRoles[2]), userService.checkAcceptAble(), controller.blockUser);// need admin roles
+/**
+ * @swagger
+ * /api/user/unblock:
+ *   put:
+ *     tags:
+ *       - User
+ *     description: Mở khóa tài khoản người dùng
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: Thông tin người dùng
+ *         description: Nhập thông tin người dùng
+ *         in: body
+ *         required: true
+ *         schema:
+ *           type: object
+ *           properties:
+ *             username:
+ *              type: string
+ *              example: khangpqvn@gmail.com
+ *     responses:
+ *       200:
+ *         description: Khóa người dùng thành công
+ *         schema:
+ *          type: object
+ *          properties:
+ *            status:
+ *              type: boolean
+ *            message:
+ *              type: string
+ *              example: Mở khóa tài khoản người dùng thành công
+ */
 router.put("/unblock", authService.hasRole(roles.userRoles[2]), userService.checkAcceptAble(), controller.unBlockUser);// need admin roles
 
 
@@ -64,7 +127,47 @@ router.put("/unblock", authService.hasRole(roles.userRoles[2]), userService.chec
  */
 router.post("/adduser", authService.hasRole(roles.userRoles[2]), userService.checkAcceptAble(), controller.addUser);//need admin roles
 
-
+/**
+ * @swagger
+ * /api/user/addUser:
+ *   put:
+ *     tags:
+ *       - User
+ *     description: Sửa thông tin người dùng
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: Thông tin người dùng
+ *         description: Nhập thông tin người dùng
+ *         in: body
+ *         required: true
+ *         schema:
+ *           type: object
+ *           properties:
+ *             username:
+ *              type: string
+ *              example: khangpqvn@gmail.com
+ *             name:
+ *              type: string
+ *              example: Phạm Quang Khang
+ *             phone:
+ *              type: string
+ *              example: 0981604050
+ *             title:
+ *              type: string
+ *              example: Ô-sin cao cấp
+ *     responses:
+ *       200:
+ *         description: Sửa thông tin người dùng thành công
+ *         schema:
+ *          type: object
+ *          properties:
+ *            status:
+ *              type: boolean
+ *            message:
+ *              type: string
+ *              example: Sửa thông tin người dùng thành công
+ */
 router.put("/edituser", authService.hasRole(roles.userRoles[2]), userService.checkAcceptAble(), controller.editUser);//need admin roles
 
 /**
@@ -73,7 +176,7 @@ router.put("/edituser", authService.hasRole(roles.userRoles[2]), userService.che
  *   get:
  *     tags:
  *       - User
- *     description: Trả về danh sách tất cả người dùng
+ *     description: Trả về danh sách tất cả người dùng yêu cầu đăng nhập xác thực quyền.
  *     produces:
  *       - application/json
  *     responses:
@@ -89,7 +192,7 @@ router.get("/findAll", authService.hasRole(roles.userRoles[2]), userService.chec
  *   get:
  *     tags:
  *       - User
- *     description: Trả về danh sách tất cả người dùng
+ *     description: Trả về danh sách tất cả người dùng không thông qua đăng nhập.
  *     produces:
  *       - application/json
  *     responses:
