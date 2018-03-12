@@ -142,7 +142,7 @@ module.exports = {
     editUser: function (req, res) {//
         var userName = req.body.username;
         var name = req.body.name;
-        var phone = req.body.name;
+        var phone = req.body.phone;
         var title = req.body.title;
         if (!userName) res.status(400).json({
             status: false,
