@@ -1,16 +1,95 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html>
+
 <head>
-    <title>VPB </title>
+    <title>Trang chủ</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="fontAwesome/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="css/bootstrap/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="css/index.css">
 </head>
+
 <body>
-<!-- Header -->
-<header id="top" class="header">
-    <div class="text-vertical-center ">
-        <h1 >HELLO</h1>
-        <br>
-        <a href="/api/auth/google/login">Đăng Nhập</a>
+    <div class="bg" style="background-image: url(images/bg.jpg)">
+        <div class="header-topbar">
+            <div class="container">
+                <ul class="pull-left">
+                    <li>
+                        <a href="#" style="border-right: 1px solid rgba(255, 255, 255, 0.3);">
+                            <i class="fa fa-phone" aria-hidden="true"></i> +84 969 312 432
+                        </a>
+                    </li>
+                    <li>
+                        <a href="http://google.com">
+                            <i class="fa fa-google-plus" aria-hidden="true"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="http://facebook.com">
+                            <i class="fa fa-facebook" aria-hidden="true"></i>
+                        </a>
+                    </li>
+                </ul>
+                <ul class="pull-right">
+                    <li>
+                        <a href="">
+                            <i class="fa fa-question-circle" aria-hidden="true"></i> Trợ giúp
+                        </a>
+                    </li>
+                    <li><span class="rot">|</span></li>
+                    <li>
+                        <a href="">
+                            <i class="fa fa-info-circle" aria-hidden="true"></i> Thông tin
+                        </a>
+                    </li>
+                    <li><span class="rot">|</span></li>
+                    <li>
+                        <a href="#" data-toggle="modal" data-target="#modalRegister">
+                            <i class="fa fa-pencil-square-o" aria-hidden="true"></i> Đăng ký
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="content">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 text-center">
+                        <h1 class="banner">Chào mừng đến với hệ thống VPB</h1>
+                        <h4></h4>
+                        <a href="/api/auth/google/login">
+                            <i class="fa fa-google-plus" aria-hidden="true"></i> Đăng nhập với Google
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-</header>
+
+    <!-- Modal -->
+    <div class="modal fade" id="modalRegister" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Modal Header</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Some text in the modal.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
 </body>
+
 </html>
