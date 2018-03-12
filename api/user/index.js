@@ -53,9 +53,26 @@ var swaggerJSDoc = require('swagger-jsdoc');
  *            message:
  *              type: string
  *              example: Thêm mới người dùng thành công
- *
- *
- *
+ *       400:
+ *         description: Bad request, Trường thông tin đẩy lên không đúng
+ *         schema:
+ *          type: object
+ *          properties:
+ *              status:
+ *                  type: boolean
+ *              message:
+ *                  type: string
+ *       404:
+ *         description: Người dùng đã tồn tại trong hệ thống
+ *         schema:
+ *          type: object
+ *          properties:
+ *              status:
+ *                  type: boolean
+ *              message:
+ *                  type: string
+ *       500:
+ *         description: Lỗi chưa được xác định
  */
 router.post("/adduser", authService.hasRole(roles.userRoles[2]), userService.checkAcceptAble(), controller.addUser);//need admin roles
 
@@ -99,6 +116,26 @@ router.post("/adduser", authService.hasRole(roles.userRoles[2]), userService.che
  *            message:
  *              type: string
  *              example: Sửa thông tin người dùng thành công
+ *       400:
+ *         description: Bad request, Trường thông tin đẩy lên không đúng
+ *         schema:
+ *          type: object
+ *          properties:
+ *              status:
+ *                  type: boolean
+ *              message:
+ *                  type: string
+ *       404:
+ *         description: Không tìm thấy người dùng trong hệ thống
+ *         schema:
+ *          type: object
+ *          properties:
+ *              status:
+ *                  type: boolean
+ *              message:
+ *                  type: string
+ *       500:
+ *         description: Lỗi chưa được xác định
  */
 router.put("/edituser", authService.hasRole(roles.userRoles[2]), userService.checkAcceptAble(), controller.editUser);//need admin roles
 
@@ -166,6 +203,26 @@ router.put("/block", authService.hasRole(roles.userRoles[2]), userService.checkA
  *            message:
  *              type: string
  *              example: Mở khóa tài khoản người dùng thành công
+ *       400:
+ *         description: Bad request, Trường thông tin đẩy lên không đúng
+ *         schema:
+ *          type: object
+ *          properties:
+ *              status:
+ *                  type: boolean
+ *              message:
+ *                  type: string
+ *       404:
+ *         description: Không tìm thấy người dùng trong hệ thống
+ *         schema:
+ *          type: object
+ *          properties:
+ *              status:
+ *                  type: boolean
+ *              message:
+ *                  type: string
+ *       500:
+ *         description: Lỗi chưa được xác định
  */
 router.put("/unblock", authService.hasRole(roles.userRoles[2]), userService.checkAcceptAble(), controller.unBlockUser);// need admin roles
 
@@ -182,6 +239,8 @@ router.put("/unblock", authService.hasRole(roles.userRoles[2]), userService.chec
  *     responses:
  *       200:
  *         description: Danh sách tất cả người dùng trong hệ thống
+ *       500:
+ *          description: Lỗi chưa được xác đinh
  */
 router.get("/findAll", authService.hasRole(roles.userRoles[2]), userService.checkAcceptAble(), controller.findAll);
 
