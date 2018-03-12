@@ -17,18 +17,21 @@ module.exports = {
         var role = req.body.role || roles.userRoles[1];//manager
         var title = req.body.title;
         var isBlock = false;
-        if (!userName) res.json({
+        if (!userName) res.status(400).json({
             status: false,
             message: "Tài khoản người dùng không được để trống"
-        }); else if (!name) res.json({status: false, message: "Tên người dùng không được để trống."});
+        }); else if (!name) res.status(400).json({status: false, message: "Tên người dùng không được để trống."});
         else {
 
             title = title ? title : "";
             User.findOne({username: userName.trim()}).exec(function (err, data) {
                 if (data) {
-                    res.json({status: false, message: "Người dùng đã tồn tại trong hệ thống. Vui lòng kiểm tra lại!"});
+                    res.status(404).json({
+                        status: false,
+                        message: "Người dùng đã tồn tại trong hệ thống. Vui lòng kiểm tra lại!"
+                    });
                 } else if (err) {
-                    res.json({
+                    res.status(500).json({
                         status: false,
                         message: "Đã xảy ra lỗi trong quá trình kiểm tra tính hợp lệ của người dùng. Vui lòng thử lại!"
                     });
@@ -47,14 +50,14 @@ module.exports = {
                     newUser.validate(function (err) {
                         if (err) {
                             // console.log(String(err));
-                            res.json({status: false, message: String(err).split(":")[2]});//message in validation
+                            res.status(400).json({status: false, message: String(err).split(":")[2]});//message in validation
                         } else {
                             User.create(newUser, function (err, data) {
                                 if (!err) {
-                                    res.json({status: true, message: "Thêm mới người dùng thành công."})
+                                    res.status(200).json({status: true, message: "Thêm mới người dùng thành công."})
                                 } else {
                                     // console.log(String(err).split(":")[2]);
-                                    res.json({status: false, message: err.message})
+                                    res.status(400).json({status: false, message: err.message})
                                 }
                             })
                         }
@@ -72,21 +75,24 @@ module.exports = {
         if (userName) {
             userName = userName.trim();
             if (userName.toLowerCase() === req.user.username.toLowerCase()) {
-                res.json({status: false, message: "Bạn không thể khóa tài khoản của chính mình. "})
+                res.status(400).json({status: false, message: "Bạn không thể khóa tài khoản của chính mình. "})
             } else
                 User.findOne({username: userName, isBlock: false}).exec(function (err, data) {
                     if (data) {
                         data.isBlock = true;
                         data.save(function (err, newData) {
                             if (!err) {
-                                res.json({status: true, message: "Khóa tài khoản người dùng thành công"});
+                                res.status(200).json({status: true, message: "Khóa tài khoản người dùng thành công"});
                             } else {
                                 // logController.addLogAuto(req, username, "block", "Block User");
-                                res.json({status: false, message: "Đã có lỗi đã xảy ra, Xin vui lòng thử lại "});
+                                res.status(500).json({
+                                    status: false,
+                                    message: "Đã có lỗi đã xảy ra, Xin vui lòng thử lại "
+                                });
                             }
                         })
                     } else {
-                        res.json({
+                        res.status(404).json({
                             status: false,
                             message: "Hệ thống không tìm thấy tài khoản, Xin vui lòng kiểm tra lại."
                         });
@@ -94,7 +100,7 @@ module.exports = {
                 })
 
         } else {
-            res.json({
+            res.status(400).json({
                 status: false,
                 message: "Khóa tài khoản người dùng thất bại. Tài khoản người dùng không được để trống!"
             });
@@ -109,18 +115,24 @@ module.exports = {
                     data.isBlock = false;
                     data.save(function (err, newData) {
                         if (!err) {
-                            res.json({status: true, message: "Mở khóa tài khoản người dùng thành công."});
+                            res.status(200).json({status: true, message: "Mở khóa tài khoản người dùng thành công."});
                         } else {
-                            res.json({status: false, message: "Đã có lỗi đã xảy ra, Xin vui lòng thử lại."});
+                            res.status(400).json({
+                                status: false,
+                                message: "Đã có lỗi đã xảy ra, Xin vui lòng thử lại."
+                            });
                         }
                     })
                 } else {
-                    res.json({status: false, message: "Hệ thống không tìm thấy tài khoản, Xin vui lòng kiểm tra lại."});
+                    res.status(404).json({
+                        status: false,
+                        message: "Hệ thống không tìm thấy tài khoản, Xin vui lòng kiểm tra lại."
+                    });
                 }
             })
 
         } else {
-            res.json({
+            res.status(400).json({
                 status: false,
                 message: "Mở khóa tài khoản người dùng thất bại. Tài khoản người dùng không được để trống!"
             });
@@ -132,11 +144,11 @@ module.exports = {
         var name = req.body.name;
         var phone = req.body.name;
         var title = req.body.title;
-        if (!userName) res.json({
+        if (!userName) res.status(400).json({
             status: false,
             message: "Tài khoản người dùng không được để trống"
         });
-        else if (!name) res.json({status: false, message: "Tên người dùng không được để trống"});
+        else if (!name) res.status(400).json({status: false, message: "Tên người dùng không được để trống"});
         else {
             title = title ? title : "";
             User.findOne({username: userName.trim()}).exec(function (err, data) {
@@ -146,20 +158,26 @@ module.exports = {
                     data.title = title;
                     data.save(function (err, newData) {
                         if (err) {
-                            res.json({status: false, message: "Đã có lỗi đã xảy ra, Xin vui lòng thử lại."});
+                            res.status(400).json({
+                                status: false,
+                                message: "Đã có lỗi đã xảy ra, Xin vui lòng thử lại."
+                            });
                         } else {
-                            res.json({status: true, message: "Sửa đổi thông tin người dùng thành công."});
+                            res.status(200).json({status: true, message: "Sửa đổi thông tin người dùng thành công."});
                         }
                     })
                 } else {
-                    res.json({status: false, message: "Hệ thống không tìm thấy tài khoản, Xin vui lòng kiểm tra lại."});
+                    res.status(404).json({
+                        status: false,
+                        message: "Hệ thống không tìm thấy tài khoản, Xin vui lòng kiểm tra lại."
+                    });
                 }
             })
         }
     },
     findAll: function (req, res) {
         User.find().exec(function (err, data) {
-            res.json({userList: data});
+            res.status(200).json({userList: data});
         });
     }
 
