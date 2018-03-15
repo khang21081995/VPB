@@ -19,7 +19,7 @@ module.exports = {
                     // req.logout();
                     // res.status(403).send('Bạn không đủ quyền để thực hiện hành vi này');
                     // next(new Error('Bạn không đủ quyền để thực hiện hành vi này'));
-                    res.json({status: false, message: 'Bạn không đủ quyền để thực hiện hành vi này'});
+                    res.status(403).json({status: false, message: 'Bạn không đủ quyền để thực hiện hành vi này'});
 
                 }
             });
@@ -31,7 +31,7 @@ module.exports = {
             return next();
         } else
         // res.json({status: false, message: "You have not logged in !!!"});
-            res.redirect("/");
+            res.status(401).redirect("/");
     },
 
 

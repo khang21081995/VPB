@@ -16,12 +16,12 @@ module.exports = {
                     res.json({status: true, message: "Tạo đường dẫn mới thành công"});
                 } else {
                     // console.log("data:" + data);
-                    res.json({status: false, message: err.message});//message in pre save
+                    res.status(400).json({status: false, message: err.message});//message in pre save
 
                 }
             });
         } else {
-            res.json({status: false, message: "Thông tin về link không được để trống"});
+            res.status(400).json({status: false, message: "Thông tin về link không được để trống"});
         }
 
 

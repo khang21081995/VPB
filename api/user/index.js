@@ -62,6 +62,10 @@ var swaggerJSDoc = require('swagger-jsdoc');
  *                  type: boolean
  *              message:
  *                  type: string
+ *       401:
+ *          description: Chưa xác thực đăng nhập
+ *       403:
+ *          description: Không có quyền truy cập
  *       404:
  *         description: Người dùng đã tồn tại trong hệ thống
  *         schema:
@@ -125,6 +129,10 @@ router.post("/adduser", authService.hasRole(roles.userRoles[2]), userService.che
  *                  type: boolean
  *              message:
  *                  type: string
+ *       401:
+ *          description: Chưa xác thực đăng nhập
+ *       403:
+ *          description: Không có quyền truy cập
  *       404:
  *         description: Không tìm thấy người dùng trong hệ thống
  *         schema:
@@ -170,8 +178,13 @@ router.put("/edituser", authService.hasRole(roles.userRoles[2]), userService.che
  *            message:
  *              type: string
  *              example: Khóa tài khoản người dùng thành công
+ *       401:
+ *          description: Chưa xác thực đăng nhập
+ *       403:
+ *          description: Không có quyền truy cập
  */
 router.put("/block", authService.hasRole(roles.userRoles[2]), userService.checkAcceptAble(), controller.blockUser);// need admin roles
+
 /**
  * @swagger
  * /api/user/unblock:
@@ -212,6 +225,10 @@ router.put("/block", authService.hasRole(roles.userRoles[2]), userService.checkA
  *                  type: boolean
  *              message:
  *                  type: string
+ *       401:
+ *          description: Chưa xác thực đăng nhập
+ *       403:
+ *          description: Không có quyền truy cập
  *       404:
  *         description: Không tìm thấy người dùng trong hệ thống
  *         schema:
@@ -221,8 +238,9 @@ router.put("/block", authService.hasRole(roles.userRoles[2]), userService.checkA
  *                  type: boolean
  *              message:
  *                  type: string
+ *
  *       500:
- *         description: Lỗi chưa được xác định
+ *          description: Lỗi chưa được xác đinh
  */
 router.put("/unblock", authService.hasRole(roles.userRoles[2]), userService.checkAcceptAble(), controller.unBlockUser);// need admin roles
 
@@ -239,6 +257,10 @@ router.put("/unblock", authService.hasRole(roles.userRoles[2]), userService.chec
  *     responses:
  *       200:
  *         description: Danh sách tất cả người dùng trong hệ thống
+ *       401:
+ *          description: Chưa xác thực đăng nhập
+ *       403:
+ *          description: Không có quyền truy cập
  *       500:
  *          description: Lỗi chưa được xác đinh
  */

@@ -14,22 +14,20 @@ var router = express.Router();
 /***************************** api/user  *****************************/
 /**
  * @swagger
- * /api/customer/addCustomer:
+ * /api/user/findall:
  *   post:
  *     tags:
  *       - Link
- *     description: Thêm link mới
+ *     description: Thêm 1 hyperlink mới.
  *     produces:
  *       - application/json
- *     parameters:
- *       - name: puppy
- *         description: Puppy object
- *         in: body
- *         required: true
  *     responses:
  *       200:
- *         description: Successfully created
- *
+ *         description: Thêm Link thành công
+ *       400:
+ *          description: Thông tin về Link không được chấp nhận
+ *       500:
+ *          description: Lỗi chưa được xác đinh
  */
 router.post("/addLink", authService.hasRole(roles.userRoles[2]), userService.checkAcceptAble(), controller.addLink);//need admin roles
 router.put("/editLink", authService.hasRole(roles.userRoles[2]), userService.checkAcceptAble(), controller.editLink);//need admin roles
