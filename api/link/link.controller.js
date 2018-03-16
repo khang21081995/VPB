@@ -13,7 +13,7 @@ module.exports = {
                 if (!err) {
                     // console.log("data:" + data);
                     // logController.addLogAuto(req, newUser.username, "add", "Adding new User");
-                    res.json({status: true, message: "Tạo đường dẫn mới thành công"});
+                    res.status(200).json({status: true, message: "Tạo đường dẫn mới thành công"});
                 } else {
                     // console.log("data:" + data);
                     res.status(400).json({status: false, message: err.message});//message in pre save
@@ -31,7 +31,7 @@ module.exports = {
         var name = req.body.name;
         var link = req.body.link;
         if (!_id || !name || !link) {
-            res.json({status: false, message: "Thông tin về link không được để trống"});
+            res.status(400).json({status: false, message: "Thông tin về link không được để trống"});
         } else {
             Link.findOne({_id: _id}).exec(function (err, data) {
                 if (data) {
@@ -39,11 +39,13 @@ module.exports = {
                     data.link = link;
                     data.save(function (err, newData) {
                         if (!err) {
-                            res.json({status: true, message: "Sửa đổi thông tin thành công"});
+                            res.status(200).json({status: true, message: "Sửa đổi thông tin thành công"});
                         } else {
-                            res.json({status: false, message: "Sửa đổi thông tin thất bại. Hãy thử lại"});
+                            res.status(400).json({status: false, message: "Sửa đổi thông tin thất bại. Hãy thử lại"});
                         }
                     });
+                } else {
+                    res.status(404).json({status: false, message: "Không tìm thấy thông tin Link cần sửa đổi!"});
                 }
             })
         }
@@ -57,12 +59,14 @@ module.exports = {
                 if (data) {
                     data.remove(function (err, newData) {
                         if (!err) {
-                            res.json({status: false, message: "Xóa Link thành công"});
+                            res.status(200).json({status: true, message: "Xóa Link thành công"});
                         } else {
                             // logController.addLogAuto(req, username, "block", "Block User");
-                            res.json({status: true, message: "Xóa Link thất bại"});
+                            res.status(500).json({status: false, message: "Xóa Link thất bại"});
                         }
                     });
+                } else {
+                    res.status(404).json({status: false, message: "Không tìm thấy thông tin Link cần sửa đổi!"});
                 }
             })
         }
@@ -70,9 +74,9 @@ module.exports = {
     getLink: function (req, res) {
         Link.find().exec(function (err, data) {
             if (!err)
-                res.json({status: true, data: data});
+                res.status(200).json({status: true, data: data});
             else {
-                res.json({status: false, message: "Đã có lỗi xảy ra! Xin vui lòng thử lại"})
+                res.status(500).json({status: false, message: "Đã có lỗi xảy ra! Xin vui lòng thử lại"})
             }
         })
     }

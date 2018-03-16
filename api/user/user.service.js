@@ -19,7 +19,7 @@ module.exports = {
                         } else {
                             //tai khoan bi khoa khong con co quyen thuc hien hanh dong nua.
                             req.session.destroy();
-                            res.json({status: false, message: messages.block_message});
+                            res.status(403).json({status: false, message: messages.block_message});
                         }
                     })
                 } else if (req.user.email) {
@@ -30,11 +30,11 @@ module.exports = {
                         } else {
                             //tai khoan bi khoa khong con co quyen thuc hien hanh dong nua.
                             req.session.destroy();
-                            res.json({status: false, message: messages.block_message});
+                            res.status(403).json({status: false, message: messages.block_message});
                         }
                     })
                 } else {
-                    res.json({status: false, message: "bạn chưa đăng nhập"});
+                    res.status(401).json({status: false, message: "bạn chưa đăng nhập"});
                 }
             });
     }

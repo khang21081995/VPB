@@ -273,7 +273,7 @@ router.get("/findAll", authService.hasRole(roles.userRoles[2]), userService.chec
  *   get:
  *     tags:
  *       - User
- *     description: Trả về danh sách tất cả người dùng không thông qua đăng nhập.
+ *     description: test sẽ bỏ đi trong môi trường thật
  *     produces:
  *       - application/json
  *     responses:

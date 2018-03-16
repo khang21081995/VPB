@@ -47,6 +47,7 @@ module.exports = function (app) {
     app.use("/api/auth", require("./api/auth"));
     app.use("/api/user", require("./api/user"));
     app.use("/api/customer", require("./api/customer"));
+    app.use("/api/link", require("./api/link"));
     app.use("/", require("./views_render"))
     app.get('/swagger.json', function (req, res) {
         res.setHeader('Content-Type', 'application/json');
