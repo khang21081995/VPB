@@ -12,7 +12,7 @@ var router = express.Router();
 
 
 /***************************** api/user  *****************************/
-/**
+/*
  * @swagger
  * /api/link:
  *   post:
@@ -64,7 +64,7 @@ var router = express.Router();
  *         description: Lỗi chưa được xác định
  */
 router.post("/", authService.hasRole(roles.userRoles[2]), userService.checkAcceptAble(), controller.addLink);//need admin roles
-/**
+/*
  * @swagger
  * /api/link/editlink:
  *   put:
@@ -120,7 +120,7 @@ router.post("/", authService.hasRole(roles.userRoles[2]), userService.checkAccep
  */
 router.put("/editLink", authService.hasRole(roles.userRoles[2]), userService.checkAcceptAble(), controller.editLink);//need admin roles
 
-/**
+/*
  * @swagger
  * /api/link:
  *   delete:
@@ -170,7 +170,7 @@ router.put("/editLink", authService.hasRole(roles.userRoles[2]), userService.che
  */
 router.delete("/", authService.hasRole(roles.userRoles[2]), userService.checkAcceptAble(), controller.deleteLink);//need admin roles
 
-/**
+/*
  * @swagger
  * /api/link:
  *   get:
