@@ -12,7 +12,7 @@ var router = express.Router();
 
 
 /***************************** api/user  *****************************/
-/*
+/**
  * @swagger
  * /api/link:
  *   post:
@@ -21,9 +21,9 @@ var router = express.Router();
  *     description: Thêm 1 hyperlink mới.
  *     produces:
  *       - application/json
- *    parameters:
- *       - name:Thông tin input
- *         description: Nhập thông tin người Link
+ *     parameters:
+ *       - name: Thông tin Link
+ *         description: Nhập thông tin Link
  *         in: body
  *         required: true
  *         schema:
@@ -64,7 +64,7 @@ var router = express.Router();
  *         description: Lỗi chưa được xác định
  */
 router.post("/", authService.hasRole(roles.userRoles[2]), userService.checkAcceptAble(), controller.addLink);//need admin roles
-/*
+/**
  * @swagger
  * /api/link/editlink:
  *   put:
@@ -73,8 +73,8 @@ router.post("/", authService.hasRole(roles.userRoles[2]), userService.checkAccep
  *     description: Sửa thông tin link.
  *     produces:
  *       - application/json
- *    parameters:
- *       - name:Thông tin chỉnh sửa Link
+ *     parameters:
+ *       - name: Thông tin chỉnh sửa Link
  *         description: Nhập thông tin Link. Lưu ý api update thông tin dựa theo `_id` của link sẽ được trả về khi gọi hàm get
  *         in: body
  *         required: true
@@ -83,7 +83,7 @@ router.post("/", authService.hasRole(roles.userRoles[2]), userService.checkAccep
  *           properties:
  *             _id:
  *               type: string
- *               example: "59a6853d9b2ce70011e93995"
+ *               example: "5aab3e9ffe2be297a8548990"
  *             name:
  *              type: string
  *              example: FACEBOOK
@@ -120,7 +120,7 @@ router.post("/", authService.hasRole(roles.userRoles[2]), userService.checkAccep
  */
 router.put("/editLink", authService.hasRole(roles.userRoles[2]), userService.checkAcceptAble(), controller.editLink);//need admin roles
 
-/*
+/**
  * @swagger
  * /api/link:
  *   delete:
@@ -139,7 +139,7 @@ router.put("/editLink", authService.hasRole(roles.userRoles[2]), userService.che
  *           properties:
  *             _id:
  *               type: string
- *               example: "59a6853d9b2ce70011e93995"
+ *               example: "5aab3e9ffe2be297a8548990"
  *     responses:
  *       200:
  *         description: Xóa Link thành công
@@ -170,7 +170,7 @@ router.put("/editLink", authService.hasRole(roles.userRoles[2]), userService.che
  */
 router.delete("/", authService.hasRole(roles.userRoles[2]), userService.checkAcceptAble(), controller.deleteLink);//need admin roles
 
-/*
+/**
  * @swagger
  * /api/link:
  *   get:
@@ -187,8 +187,7 @@ router.delete("/", authService.hasRole(roles.userRoles[2]), userService.checkAcc
  *          properties:
  *              data:
  *                type: object
- *
- *        401:
+ *       401:
  *          description: Chưa xác thực đăng nhập
  *       403:
  *          description: Không có quyền truy cập

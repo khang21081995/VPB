@@ -13,7 +13,7 @@ module.exports = {
                 if (!err) {
                     // console.log("data:" + data);
                     // logController.addLogAuto(req, newUser.username, "add", "Adding new User");
-                    res.status(200).json({status: true, message: "Tạo đường dẫn mới thành công"});
+                    res.status(200).json({status: true, message: "Tạo đường dẫn mới thành công", _id: data._id});
                 } else {
                     // console.log("data:" + data);
                     res.status(400).json({status: false, message: err.message});//message in pre save
